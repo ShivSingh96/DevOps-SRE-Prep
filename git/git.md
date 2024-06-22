@@ -816,14 +816,6 @@ Ensure that the development machines are equipped with fast SSDs and sufficient 
 By applying these techniques, you can help mitigate the performance issues associated with managing a large monorepo, ensuring that Git operations are faster and more efficient for the development team.
 
 ## What's is the branch strategy (flow) you know?
-## True or False? A branch is basically a simple pointer or reference to the head of certain line of work
-## You have two branches - main and devel. How do you make sure devel is in sync with main?
-## Describe shortly what happens behind the scenes when you run git branch?
-## When you run git branch  how does Git know the SHA-1 of the last commit?
-## What unstaged means in regards to Git?
-## True or False? when you git checkout some_branch, Git updates .git/HEAD to /refs/heads/some_branch
-
-### What's is the branch strategy (flow) you know?
 One of the most commonly used branch strategies is **Git Flow**. Git Flow defines a robust branching model designed around the project release cycle. The primary branches are:
 
 1. **main**: The main branch contains production-ready code.
@@ -834,11 +826,11 @@ Additional branches include:
 - **Release branches**: Branches off from `develop` and merges into both `develop` and `main`. These are used for preparing a new production release.
 - **Hotfix branches**: Branches off from `main` and merges into both `main` and `develop`. These are used for fixing urgent bugs in the production code.
 
-### True or False? A branch is basically a simple pointer or reference to the head of a certain line of work.
+## True or False? A branch is basically a simple pointer or reference to the head of a certain line of work.
 
 **True**. A branch in Git is a lightweight movable pointer to a commit.
 
-### How to Make Sure `devel` is in Sync with `main`
+## You have two branches - main and devel. How to Make Sure `devel` is in Sync with `main`?
 
 To ensure that `devel` is in sync with `main`, you should regularly merge changes from `main` into `devel` or rebase `devel` onto `main`.
 
@@ -856,33 +848,27 @@ git pull origin main
 git rebase main
 ```
 
-### Describe Shortly What Happens Behind the Scenes When You Run `git branch`
+## Describe Shortly What Happens Behind the Scenes When You Run `git branch`?
 
 When you run `git branch`, Git performs the following operations:
 - **Without Arguments**: Lists all branches, highlighting the current branch.
 - **With Arguments**: If you specify a branch name (e.g., `git branch new-branch`), Git creates a new branch pointer that references the current commit.
 
-### How Does Git Know the SHA-1 of the Last Commit When You Run `git branch`?
+## How Does Git Know the SHA-1 of the Last Commit When You Run `git branch`?
 
 Git knows the SHA-1 of the last commit by referencing the current commit pointed to by the HEAD pointer. When you create a new branch, Git sets the branch pointer to this commit.
 
-### What Does Unstaged Mean in Regards to Git?
+## What Does Unstaged Mean in Regards to Git?
 
 **Unstaged** refers to changes in your working directory that have not yet been added to the staging area. These changes will not be included in the next commit unless they are staged using `git add`.
 
-### True or False? When You `git checkout some_branch`, Git Updates `.git/HEAD` to `/refs/heads/some_branch`
+## True or False? When You `git checkout some_branch`, Git Updates `.git/HEAD` to `/refs/heads/some_branch`
 
 **True**. When you checkout a branch with `git checkout some_branch`, Git updates the `.git/HEAD` file to point to `refs/heads/some_branch`. This makes `HEAD` a symbolic reference to the tip of the branch `some_branch`.
 
 By following these concepts and commands, you can effectively manage and synchronize branches, understand Git's internal mechanisms, and handle unstaged changes in your repository.
 
 ## You have two branches - main and devel. How do you merge devel into main?
-## How to resolve git merge conflicts?
-## What merge strategies are you familiar with?
-## Explain Git octopus merge
-## What is the difference between git reset and git revert?
-
-### Merging `devel` into `main`
 
 To merge `devel` into `main`, follow these steps:
 
@@ -896,7 +882,7 @@ To merge `devel` into `main`, follow these steps:
    git merge devel
    ```
 
-### Resolving Git Merge Conflicts
+## How to resolve git merge conflicts?
 
 When Git encounters conflicts during a merge, it will stop and mark the conflicts in the files. To resolve merge conflicts, follow these steps:
 
@@ -920,7 +906,7 @@ When Git encounters conflicts during a merge, it will stop and mark the conflict
    git commit
    ```
 
-### Merge Strategies
+## What merge strategies are you familiar with?
 
 Git provides different strategies for merging branches:
 
@@ -939,11 +925,11 @@ Git provides different strategies for merging branches:
    git merge -s octopus <branch1> <branch2> <branch3> ...
    ```
 
-### Git Octopus Merge
+## Explain Git octopus merge
 
 The **octopus merge** strategy is designed for merging multiple branches into a single branch at once. It is often used when you have several topic branches that you want to merge into a single integration branch. This strategy tries to merge all specified branches into the current branch.
 
-### Difference Between `git reset` and `git revert`
+## What is the difference between git reset and git revert?
 
 **`git reset`**:
 - `git reset` moves the current branch pointer to a specified commit and optionally modifies the index and working directory to match.
@@ -974,18 +960,6 @@ The **octopus merge** strategy is designed for merging multiple branches into a 
 - `git reset` alters the commit history and can affect the index and working directory, while `git revert` creates a new commit to reverse changes, preserving the commit history.
 
 ## You would like to move forth commit to the top. How would you achieve that?
-## In what situations are you using git rebase?
-## How do you revert a specific file to previous commit?
-## How to squash last two commits?
-## What is the .git directory? What can you find there?
-## What are some Git anti-patterns? Things that you shouldn't do
-## How do you remove a remote branch?
-## Are you familiar with gitattributes? When would you use it?
-## How do you discard local file changes? (before commit)
-## How do you discard local commits?
-## True or False? To remove a file from git but not from the filesystem, one should use git rm 
-
-### Moving the Fourth Commit to the Top
 
 To move the fourth commit to the top of the branch, you can use interactive rebase. Here’s how you can achieve that:
 
@@ -1006,7 +980,7 @@ To move the fourth commit to the top of the branch, you can use interactive reba
 
 3. Save and close the editor. Git will reapply the commits in the new order.
 
-### Using `git rebase`
+## In what situations are you using git rebase?
 
 `git rebase` is used in the following situations:
 
@@ -1019,7 +993,7 @@ To move the fourth commit to the top of the branch, you can use interactive reba
   git rebase -i HEAD~<n>
   ```
 
-### Reverting a Specific File to a Previous Commit
+## How do you revert a specific file to previous commit?
 
 To revert a specific file to its state in a previous commit:
 
@@ -1029,7 +1003,7 @@ To revert a specific file to its state in a previous commit:
    git checkout <commit> -- <file>
    ```
 
-### Squashing Last Two Commits
+## How to squash last two commits?
 
 To squash the last two commits into one:
 
@@ -1046,7 +1020,7 @@ To squash the last two commits into one:
 
 3. Save and close the editor. Git will prompt you to edit the commit message.
 
-### The `.git` Directory
+## What is the .git directory? What can you find there?
 
 The `.git` directory is the repository’s metadata store. It contains all the necessary files for the repository, including:
 
@@ -1058,7 +1032,7 @@ The `.git` directory is the repository’s metadata store. It contains all the n
 - **objects/**: All the content of the repository (blobs, trees, commits, tags).
 - **refs/**: References to commits (branches, tags).
 
-### Git Anti-Patterns
+## What are some Git anti-patterns? Things that you shouldn't do
 
 Some Git anti-patterns to avoid:
 
@@ -1068,7 +1042,7 @@ Some Git anti-patterns to avoid:
 - **Commit pollution**: Committing unnecessary or temporary files.
 - **Infrequent commits**: Making huge commits with mixed changes instead of small, focused commits.
 
-### Removing a Remote Branch
+## How do you remove a remote branch?
 
 To remove a remote branch:
 
@@ -1077,7 +1051,7 @@ To remove a remote branch:
    git push origin --delete <branch>
    ```
 
-### Using `gitattributes`
+## Are you familiar with gitattributes? When would you use it?
 
 `gitattributes` is used to manage attributes for pathnames. It is commonly used for:
 
@@ -1090,7 +1064,7 @@ To remove a remote branch:
   *.doc diff=word
   ```
 
-### Discarding Local File Changes (Before Commit)
+## How do you discard local file changes? (before commit)
 
 To discard local changes to a file before committing:
 
@@ -1103,7 +1077,7 @@ To discard local changes to a file before committing:
    git reset --hard
    ```
 
-### Discarding Local Commits
+## How do you discard local commits?
 
 To discard local commits and reset the branch to a previous state:
 
@@ -1112,7 +1086,7 @@ To discard local commits and reset the branch to a previous state:
    git reset --hard <commit>
    ```
 
-### True or False? To Remove a File from Git But Not from the Filesystem, One Should Use `git rm`
+## True or False? To Remove a File from Git But Not from the Filesystem, One Should Use `git rm`
 
 **False**. Using `git rm` removes the file from both the Git index and the filesystem. To remove a file from Git but not from the filesystem, use:
 
@@ -1123,13 +1097,6 @@ git rm --cached <file>
 This removes the file from the index, so it will no longer be tracked, but leaves it on the filesystem.
 
 ## How to list the current git references in a given repository?
-## What git diff does?
-## Which one is faster? git diff-index HEAD or git diff HEAD
-## By which other Git commands does git diff used?
-## Describe how git status works
-## If git status has to run diff on all the files in the HEAD commit to those in staging area/index and another one on staging area/index and working directory, how is it fairly fast?
-
-### Listing Current Git References in a Given Repository
 
 To list the current Git references in a repository, you can use the following commands:
 
@@ -1148,7 +1115,7 @@ To list the current Git references in a repository, you can use the following co
    git tag -l
    ```
 
-### What `git diff` Does
+## What git diff does?
 
 `git diff` shows the differences between various Git data sources. It can be used to compare:
 
@@ -1167,11 +1134,11 @@ To list the current Git references in a repository, you can use the following co
   git diff <commit1> <commit2>
   ```
 
-### Which One is Faster? `git diff-index HEAD` or `git diff HEAD`
+## Which one is faster? git diff-index HEAD or git diff HEAD
 
 `git diff-index HEAD` is generally faster than `git diff HEAD` because `git diff-index` compares the index to the specified tree (in this case, HEAD), which is a simpler operation than `git diff`, which by default compares the working directory to the index. The difference in speed is usually negligible for small repositories but can be more noticeable in larger repositories.
 
-### Other Git Commands that Use `git diff`
+## Other Git Commands that Use `git diff`
 
 `git diff` is used internally by several other Git commands:
 
@@ -1180,7 +1147,7 @@ To list the current Git references in a repository, you can use the following co
 - `git show`: Uses `git diff` to show changes introduced by a specific commit.
 - `git format-patch`: Uses `git diff` to generate patch files for commits.
 
-### How `git status` Works
+## How `git status` Works?
 
 `git status` provides a summary of the state of the working directory and the staging area. Here's how it works:
 
@@ -1193,7 +1160,7 @@ To list the current Git references in a repository, you can use the following co
 3. **Lists Untracked Files**:
    - `git ls-files --others --exclude-standard`: Lists files in the working directory that are not tracked by Git and not ignored by `.gitignore`.
 
-### Why `git status` is Fairly Fast
+## Why `git status` is Fairly Fast
 
 `git status` is fairly fast due to several optimizations:
 
