@@ -140,6 +140,8 @@ The process of assigning an IP address to a pod in a Kubernetes cluster involves
 
 This process ensures that each pod gets a unique IP address within the cluster, enabling seamless communication and integration with other components of the Kubernetes ecosystem.
 
+## Why do we need service mesh in k8s if our pod can communicate by default as well & also we can use ingress controller for traffic management?
+
 In Kubernetes, while pods can communicate with each other by default and ingress controllers handle traffic management from outside the cluster, a **service mesh** adds significant benefits for managing complex microservices architectures. Here's why a service mesh is useful despite default pod communication and ingress controllers:
 
 ### 1. **Enhanced Traffic Management**
