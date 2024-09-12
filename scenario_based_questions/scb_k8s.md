@@ -181,3 +181,115 @@ In Kubernetes, while pods can communicate with each other by default and ingress
 
 ### Conclusion
 While Kubernetes provides basic service-to-service communication and ingress controllers manage external traffic, a service mesh offers **fine-grained control**, **visibility**, **security**, and **resilience** for managing microservices. As the number of services grows, these capabilities become critical for effectively managing, observing, and securing inter-service communication.
+
+## What's the importance of rewrite target in k8s ingress? Can you explain me with example?
+In Kubernetes, the **rewrite target** is an important feature in the ingress controller that allows you to modify the request URL before it is sent to the backend service. This is especially useful when your services are structured in such a way that the paths requested from outside the cluster don't match the paths on the backend services.
+
+### Importance of Rewrite Target in Kubernetes Ingress:
+
+1. **Matching External Paths to Internal Services:**
+   Often, the URL structure used by external clients (via ingress) does not match the structure used internally by services. The rewrite target feature helps to modify the incoming request's path before it reaches the backend.
+
+2. **Simplifies URL Handling:**
+   Without rewrite targets, the backend services would need to handle complex URL paths, which can make services tightly coupled to the URL structure exposed externally. Using rewrite targets simplifies the configuration by allowing the ingress controller to handle this adjustment.
+
+3. **Enables Clear Separation of Concerns:**
+   The external URL structure can be kept independent of how services internally organize their paths, allowing for more flexibility in routing without changing backend services.
+
+### Example: Rewrite Target in Action
+
+#### Scenario:
+- **External URL:** `/app/` (as seen by the user)
+- **Backend URL:** `/` (the actual path in the service)
+
+Without the rewrite target, if a user requests `/app/`, the backend service will expect the entire `/app/` prefix in the URL, which it may not recognize, leading to a 404 or routing error.
+
+#### Ingress Resource without Rewrite Target:
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /app
+        pathType: Prefix
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 80
+```
+If a user visits `http://example.com/app`, this URL will be passed as-is to the backend service (`my-service`). The backend would expect to handle the `/app` prefix, which it might not be set up for.
+
+#### Ingress Resource with Rewrite Target:
+To fix this, we use the `nginx.ingress.kubernetes.io/rewrite-target` annotation to modify the path:
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /app
+        pathType: Prefix
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 80
+```
+
+#### Explanation:
+- The annotation `nginx.ingress.kubernetes.io/rewrite-target: /` means that any incoming requests to `/app` will be **rewritten** to `/` before being sent to the backend.
+- So, if the user accesses `http://example.com/app`, the ingress controller will **strip the `/app` prefix** and send the request to the backend service as `/`.
+- Now, the backend service doesn't need to be aware of the `/app` prefix and can handle the request as it normally would.
+
+### Another Example: Retaining a Dynamic Part of the Path
+If your backend service expects to retain some part of the path (e.g., `/app/v1/*`), you can use regular expressions in the rewrite rule.
+
+For example:
+- External URL: `/app/v1/foo`
+- Internal Service: `/v1/foo`
+
+You can configure the ingress like this:
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: example-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /app(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: my-service
+            port:
+              number: 80
+```
+
+#### Explanation:
+- The path `/app(/|$)(.*)` uses a regular expression. The part after `/app` (i.e., `(/|$)(.*)`) is captured as `$2`.
+- The rewrite target `/ $2` means that anything after `/app` is passed to the backend. 
+- If the user requests `http://example.com/app/v1/foo`, it will be rewritten to `/v1/foo` before being forwarded to `my-service`.
+
+### Key Takeaways:
+- **Rewrite target** allows you to adjust the request URL before passing it to the backend service, making URL management more flexible.
+- It simplifies URL routing and decouples external URLs from the internal service structure.
+- Using rewrite targets helps when external users expect a different URL structure than the internal services can handle directly.
+
+
