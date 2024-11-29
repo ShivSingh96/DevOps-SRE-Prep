@@ -2245,3 +2245,78 @@ In this example:
 
 `yield` suspends the function's execution and sends a value back to the caller, maintaining the function's state until `next()` is called again.
 
+## Hashicorp test
+Your task is to implement a simple cloud storage system that maps objects (files) to their metainformation. Specifically, the storage system should maintain files along with some information about them (name, size, etc.). Note that this system should be in-memory, you do not need to work with the real filesystem.
+Plan your design according to the level specifications below:
+* Level 1: The cloud storage system should support adding new files, retrieving, and copying files.
+* Level 2: The cloud storage system should support finding files by matching prefixes and suffixes.
+* Level 3: The cloud storage system should support adding users with various capacity limits.
+* Level 4: The cloud storage system should support compressing and decompressing files.
+To move to the next level, you need to pass all the tests at this level.
+Note
+It is guaranteed that the given queries will never call operations that result in collisions between file and directory names.
+Level 1
+The cloud storage system should support operations to add files, copy files, and get files stored on the system.
+* add_file(self, name: str, size: int) -> bool — should add a new file name to the storage. size is the amount of memory required in bytes. The current operation fails if a file with the same name already exists. Returns True if the file was added successfully or False otherwise.
+* copy_file(self, name_from: str, name_to: str) -> bool — should copy the file at name_from to name_to. The operation fails if name_from points to a file that does not exist or points to a directory. The operation fails if the specified file already exists at name_to. Returns True if the file was copied successfully or False otherwise.
+* get_file_size(self, name: str) -> int | None — should return the size of the file name if it exists, or None otherwise.
+Examples
+The example below shows how these operations should work (the section is scrollable to the right):
+Queries	Explanations
+add_file("/dir1/dir2/file.txt", 10)
+copy_file("/not-existing.file", "/dir1/file.txt")
+copy_file("/dir1/dir2/file.txt", "/dir1/file.txt")
+add_file("/dir1/file.txt", 15)
+copy_file("/dir1/file.txt", "/dir1/dir2/file.txt")
+get_file_size("/dir1/file.txt")
+get_file_size("/not-existing.file")	
+
+class CloudStorageSystem:
+    def __init__(self):
+        # Dictionary to store files with their metadata
+        self.files = {}
+    
+    def add_file(self, name: str, size: int) -> bool:
+        """
+        Adds a new file to the storage.
+        Returns True if the file was added successfully, False otherwise.
+        """
+        if name in self.files:
+            # File already exists
+            return False
+        # Add the file with its size
+        self.files[name] = {"size": size}
+        return True
+    
+    def copy_file(self, name_from: str, name_to: str) -> bool:
+        """
+        Copies a file from name_from to name_to.
+        Returns True if the file was copied successfully, False otherwise.
+        """
+        if name_from not in self.files or name_to in self.files:
+            # Either source file doesn't exist or destination file already exists
+            return False
+        # Copy the file metadata
+        self.files[name_to] = self.files[name_from].copy()
+        return True
+    
+    def get_file_size(self, name: str) -> int | None:
+        """
+        Returns the size of the file if it exists, or None otherwise.
+        """
+        if name not in self.files:
+            return None
+        return self.files[name]["size"]
+
+
+# Example usage
+storage = CloudStorageSystem()
+
+# Test cases
+print(storage.add_file("/dir1/dir2/file.txt", 10))  # True
+print(storage.copy_file("/not-existing.file", "/dir1/file.txt"))  # False
+print(storage.copy_file("/dir1/dir2/file.txt", "/dir1/file.txt"))  # True
+print(storage.add_file("/dir1/file.txt", 15))  # False
+print(storage.copy_file("/dir1/file.txt", "/dir1/dir2/file.txt"))  # False
+print(storage.get_file_size("/dir1/file.txt"))  # 10
+print(storage.get_file_size("/not-existing.file"))  # None
