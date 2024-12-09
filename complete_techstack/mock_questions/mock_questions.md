@@ -9,3 +9,8 @@ Hands-On Tasks
 Write a Python script to deploy a Dockerized app to Kubernetes.
 Automate VM provisioning using Ansible and a Python inventory script.
 Monitor and log Consul or Nomad cluster status using Python.
+
+Hands-On Scenarios
+Automate scaling a Kubernetes Deployment using Python and kubectl commands.
+Write a Terraform script to provision an EKS cluster with worker nodes.
+Monitor Docker container logs for errors and forward them to a central logging service using Python.
