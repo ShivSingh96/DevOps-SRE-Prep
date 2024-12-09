@@ -1,0 +1,24 @@
+#Question: Write a YAML file for an Ingress resource that routes traffic to two services (service1 and service2) based on paths.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /service1
+        pathType: Prefix
+        backend:
+          service:
+            name: service1
+            port:
+              number: 80
+      - path: /service2
+        pathType: Prefix
+        backend:
+          service:
+            name: service2
+            port:
+              number: 80
+#Key Concepts: Ingress, path-based routing.
