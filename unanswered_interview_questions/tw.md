@@ -66,4 +66,35 @@ These are foundational questions covering observability, Kubernetes, AWS, Docker
 
 --- 
 
-These responses will help you articulate key concepts, best practices, and your hands-on experience across different technologies and tools.
+Client:- Piramal Finance
+Here's a quick overview and approach to each of your questions:
+
+1. **Public and Private Hosted Zones on Route 53**:
+   - A **Public Hosted Zone** allows DNS records to be resolved over the internet. Any DNS records in this zone are accessible from anywhere online.
+   - A **Private Hosted Zone** is restricted to a specific VPC, allowing records to be resolved only within that VPC. This is useful for internal DNS management, where sensitive or non-internet-facing services are hosted.
+
+2. **Handling Unsuccessful Requests Between Services with Sidecar Proxies**:
+   - If a request fails between services using sidecar proxies (like with a service mesh), it could retry based on the configuration. For example, Envoy (often used in sidecars) can be set to automatically retry a specific number of times before giving up. If retries fail, the service might log the failure and generate an alert if monitoring is set up.
+
+3. **Modifying Headers in Ingress to Mask Server Details**:
+   - To hide server details, you can configure your Ingress Controller to remove or rewrite specific HTTP headers (e.g., `Server`, `X-Powered-By`). For NGINX Ingress, you could add a custom configuration to strip out these headers using annotations like `nginx.ingress.kubernetes.io/configuration-snippet` to add directives to remove these headers.
+
+4. **Database Sharding**:
+   - **Sharding** is the process of splitting a database into smaller, more manageable pieces (or shards) to distribute data across multiple database instances. Each shard contains a subset of the data, reducing the load on any single instance, improving performance and scalability.
+
+5. **Importance of Service Mesh and Potential Latency**:
+   - **Service Mesh** provides observability, security, and traffic control for microservices, simplifying network functions like load balancing, retries, and monitoring.
+   - While service meshes add value, they can introduce latency since each request is routed through the sidecar proxy. Optimizing the mesh configuration, such as setting reasonable retry limits and circuit-breaking, can minimize latency impact.
+
+6. **Upgrading a Large K8s Cluster Quickly**:
+   - For a large cluster, consider a **rolling upgrade** using a **blue-green** or **canary strategy**:
+      - Upgrade in stages, starting with non-critical nodes, testing the changes.
+      - Automate and monitor each batch of nodes during the upgrade to ensure stability.
+      - Using an automated tool like **kops** or **eksctl** can streamline this process, and AWS’s managed service for Kubernetes might handle node upgrades automatically if EKS is being used.
+
+7. **Application Incompatibility During K8s Upgrade Without Rollback**:
+   - If certain applications are incompatible with the upgraded version, you can **isolate these applications** by moving them to a separate cluster that remains on the older version.
+   - Alternatively, consider creating a **compatibility layer** or patch the application to support the new version, allowing you to complete the upgrade with minimal downtime.
+
+8. **Cluster Autoscaler with Mixed Instance Groups on AWS**:
+   - **AWS Cluster Autoscaler** does support mixed instance groups. It intelligently scales using both spot and on-demand instances within the group, optimizing cost and availability. The autoscaler can add or remove instances based on workload, scaling across instance types within the group.
