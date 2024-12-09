@@ -1,0 +1,59 @@
+#Scenario: Implement a canary deployment for a new version of an application.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: myapp
+        version: v1
+    spec:
+      containers:
+      - name: myapp
+        image: myapp:v1
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: myapp
+        version: v2
+    spec:
+      containers:
+      - name: myapp
+        image: myapp:v2
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: app-service
+            port:
+              number: 80
+#Key Concepts: Versioning, traffic splitting.
