@@ -1,0 +1,14 @@
+#Scenario: Add a health check to a MySQL container to ensure it’s running.
+
+version: '3.8'
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+#Key Concepts: Health checks, docker-compose.
