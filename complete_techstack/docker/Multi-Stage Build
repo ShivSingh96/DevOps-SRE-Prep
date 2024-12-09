@@ -1,0 +1,19 @@
+#Question Recap
+#Write a multi-stage Dockerfile to build a Go application. The first stage compiles the Go binary, and the second stage runs the binary in a minimal Alpine Linux image.
+# Stage 1: Build stage
+FROM golang:1.20 as builder
+WORKDIR /app
+COPY . .
+RUN go build -o app main.go
+
+# Stage 2: Final stage
+FROM alpine:3.18
+WORKDIR /root/
+COPY --from=builder /app/app .
+RUN chmod +x ./app
+CMD ["./app"]
+#Explanation
+#First stage (builder):
+#Uses a Golang base image to compile the application.
+#Second stage (final image):
+#Copies only the compiled binary into an Alpine Linux base image to minimize image size.
