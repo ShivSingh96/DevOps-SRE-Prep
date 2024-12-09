@@ -1,0 +1,3 @@
+#Question: Write a command to update a Kubernetes deployment web to a new image version nginx:1.23.
+kubectl set image deployment/web web-container=nginx:1.23 --record
+#Key Concepts: Image updates, kubectl set image.
