@@ -1,4 +1,4 @@
-#Automate Jenkins Job Creation
+#Scenario: Write a Python script to create Jenkins jobs using the Jenkins REST API.
 import requests
 
 JENKINS_URL = "http://jenkins.example.com"
