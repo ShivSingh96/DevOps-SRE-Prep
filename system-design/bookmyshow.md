@@ -47,7 +47,6 @@ Design an online ticket booking system like BookMyShow, which allows users to bo
 ---
 
 ### **2. High-Level Architecture**
-![BookMyShow Architecture Diagram](https://via.placeholder.com/800x500?text=BookMyShow+Architecture+Diagram)
 
 ---
 
