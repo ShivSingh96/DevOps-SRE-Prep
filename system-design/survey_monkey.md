@@ -62,7 +62,6 @@ Design a scalable online survey platform like SurveyMonkey, where users can crea
 ---
 
 ### **2. High-Level Architecture**
-![SurveyMonkey Architecture Diagram](https://via.placeholder.com/800x500?text=Architecture+Diagram+Example)
 
 **Components Explained:**
 1. **Load Balancer:** Handles incoming traffic and routes to backend servers.
