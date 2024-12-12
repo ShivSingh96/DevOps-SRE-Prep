@@ -89,4 +89,39 @@ Design a scalable online survey platform like SurveyMonkey, where users can crea
 ---
 
 ---
+---
 
+### **SurveyMonkey High-Level Architecture**
+
+```
++-------------------+       +-------------------+
+|  User Web/Mobile  |<----->|    API Gateway    |
++-------------------+       +-------------------+
+                              |
+           +--------------------------------------------+
+           |                                            |
++-------------------+      +-------------------+      +-------------------+
+| Survey Service    |      | Response Service  |      | Analytics Service |
++-------------------+      +-------------------+      +-------------------+
+           |                                            |
++-------------------+      +-------------------+      +-------------------+
+| Database Service  |      | Notification      |      | Admin Dashboard   |
++-------------------+      +-------------------+      +-------------------+
+           |
++-------------------+
+| Cache (Redis)     |
++-------------------+
+```
+
+### **Component Explanation**
+1. **API Gateway:** Acts as the single entry point for users, exposing APIs for creating surveys, submitting responses, and fetching results.
+2. **Survey Service:** Handles survey creation and management (CRUD operations).
+3. **Response Service:** Handles the storage and retrieval of responses, with an efficient write path using a NoSQL database (e.g., DynamoDB).
+4. **Analytics Service:** Processes data to generate insights, charts, and downloadable reports for users.
+5. **Notification Service:** Sends email/SMS reminders for survey participation or completion.
+6. **Database Service:**
+   - Relational Database (e.g., RDS): Stores user data and survey metadata.
+   - NoSQL Database (e.g., DynamoDB): Stores large volumes of survey responses.
+7. **Cache (Redis):** Caches survey questions and metadata for high-speed access during survey response collection.
+
+---
