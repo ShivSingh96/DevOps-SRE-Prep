@@ -1,3 +1,5 @@
+### **Useful Links** ### :-
+**Jaegar with k8s** :- https://masroorhasan.medium.com/tracing-infrastructure-with-jaeger-on-kubernetes-6800132a677
 ### **How the ELK Stack Works in Production**
 
 The **ELK stack** (Elasticsearch, Logstash, and Kibana) is a widely used logging and monitoring solution. Here's a breakdown of its components and their roles in production:
